@@ -75,6 +75,14 @@ class Request(object):
            :rtype: A Dictionary representation of the response, if no errors occured.
         """
         json_response = response.json()
+
+        #timestamps = (created, updated, settled)
+        for (key, value) in json_response.items():
+            try:
+                json_dict[key] = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+            except:
+                pass
+
         if response.status_code == 200:
             return json_response
         if response.status_code == 400:
